@@ -76,7 +76,6 @@ object ApiClientFactory {
         val newRequest = chain.request().newBuilder()
             .addHeader("x-api-key", apiKey.trim())
             .build()
-        println(newRequest.url);
         chain.proceed(newRequest)
     }
 
