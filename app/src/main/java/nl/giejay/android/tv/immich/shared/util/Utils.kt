@@ -21,11 +21,18 @@ import android.view.ViewGroup
 import java.io.IOException
 import java.io.InputStream
 import kotlin.math.roundToInt
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 
 /**
  * A collection of utility methods, all static.
  */
 object Utils {
+
+    fun <A, B>List<A>.pmap(f: suspend (A) -> B): List<B> = runBlocking {
+        map { async(Dispatchers.Default) { f(it) } }.map { it.await() }
+    }
 
     fun View.getAllChildren(): List<View> {
         val result = ArrayList<View>()
